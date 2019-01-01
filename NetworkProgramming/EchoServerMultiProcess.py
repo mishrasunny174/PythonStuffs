@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
-import threading
+from multiprocessing import Process
 import socket
+import os
 
 LHOST = "0.0.0.0"
 LPORT = 1234
@@ -12,7 +13,7 @@ def handleClient(client):
     print("connection recieved: {}".format(client[1]))
     while len(data) != 0:
         data = clientSock.recv(2048).strip()
-        print("Thread %d: recieved %s"%(threading.get_ident(),data))
+        print("Process %d: recieved %s"%(os.getpid(),data))
         clientSock.send(data + bytes("\n", encoding="utf-8"))
     clientSock.close()
 
@@ -22,4 +23,5 @@ sock.bind((LHOST,LPORT))
 sock.listen(100)
 while True:
     client = sock.accept()
-    threading._start_new_thread(handleClient,(client,))
+    worker = Process(target=handleClient, args=(client,))
+    worker.start()
