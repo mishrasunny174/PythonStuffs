@@ -46,6 +46,9 @@ class networkSniffer(object):
             tcp_header = struct.unpack("!2s2s16s",data[34:54])
             print("SRC port: {}".format(int(binascii.hexlify(tcp_header[0]),16)))
             print("DST port: {}\n".format(int(binascii.hexlify(tcp_header[1]),16)))
+            if int(binascii.hexlify(tcp_header[0]),16) == 80 or int(binascii.hexlify(tcp_header[1]),16) == 80:
+                print("### HTTP DUMP ###")
+                print("\n{}\n".format(data[54:]))
             # print("### RAW PAYLOAD ###")
             # print("\n{}\n".format(data[54:]))
         elif protocol_version == b'\x11': #UDP
