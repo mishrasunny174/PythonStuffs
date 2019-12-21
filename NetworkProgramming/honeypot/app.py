@@ -9,7 +9,7 @@ stop = False
 def handle(client, addr, port):
 	logger = logging.getLogger()
 	# print(addr[0],":",addr[1])
-	logger.warning("Connect from {} on {}".format(addr[0], port))
+	logger.warning("Connection from {} on {}".format(addr[0], port))
 	client.close()
 
 
@@ -17,7 +17,7 @@ def serve(port):
 	servSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	servSock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 	servSock.bind((HOST, port))
-	servSock.listen(10)
+	servSock.listen(20)
 	global stop
 	while not stop:
 		clientSock, clientAddr = servSock.accept()
